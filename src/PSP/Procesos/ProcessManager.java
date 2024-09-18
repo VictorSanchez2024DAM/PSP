@@ -4,13 +4,13 @@ import java.io.IOException;
 
 public class ProcessManager {
     public static void main(String[] args) {
-        String[] commands = {"kcalc"};
+        String[] commands = {"ls"};
         try {
-           Process p = Runtime.getRuntime().exec(commands);
+            Process p = Runtime.getRuntime().exec(commands);
 
 
-           ProcessBuilder builder = new ProcessBuilder(new String[]{"kcalc"});
-           Process process = builder.start();
+            ProcessBuilder builder = new ProcessBuilder(new String[]{"ls"});
+            Process process = builder.start();
 
             int code = process.waitFor();
             System.out.println(code);
