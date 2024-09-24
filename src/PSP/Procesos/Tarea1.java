@@ -63,7 +63,11 @@ public class Tarea1 {
             sleep.inheritIO();
             Process processIsAlive = sleep.start();
 
-
+            while(processIsAlive.isAlive()){
+                System.out.println("El proceso esta ejecutandose");
+                Thread.sleep(3000);
+            }
+            System.out.println("El proceso ha terminado");
 
 
         } catch (IOException e) {
