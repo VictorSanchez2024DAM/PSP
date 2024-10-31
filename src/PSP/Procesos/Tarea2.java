@@ -1,7 +1,7 @@
 package PSP.Procesos;
 
 import java.io.*;
-import java.nio.Buffer;
+
 
 public class Tarea2 {
     public static void main(String[] args) {
@@ -20,7 +20,6 @@ public class Tarea2 {
             int exitCode = p.waitFor();
             System.out.println(exitCode);
 
-            /*
             // 2
             ProcessBuilder invalid = new ProcessBuilder("ps -rer");
             Process p2 = invalid.start();
@@ -32,7 +31,7 @@ public class Tarea2 {
             int exitCode2 = p2.waitFor();
             System.out.println(exitCode2);
 
-             */
+
             // 3
 
             ProcessBuilder writeAndRead = new ProcessBuilder("cat");
@@ -86,6 +85,17 @@ public class Tarea2 {
                 System.out.println(process.waitFor());
 
                 // 6
+            ProcessBuilder nslookup = new ProcessBuilder("nslookup");
+            Process p6 = nslookup.start();
+
+            try(BufferedReader br = new BufferedReader(new InputStreamReader(p3.getInputStream()))){
+                while((line = br.readLine()) != null){
+                    System.out.println(line);
+                }
+            }
+            int exitCode6 = p6.waitFor();
+            System.out.println(exitCode6);
+
 
             } catch (IOException | RuntimeException | InterruptedException e) {
                 System.err.println("Error...");
