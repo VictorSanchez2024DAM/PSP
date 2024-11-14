@@ -1,5 +1,7 @@
 package PSP.Procesos.ud4.almacenzapatos;
 
+import java.util.Random;
+
 /**
  * Consumer/Producer para un centro de almacén de zapatos.
  *
@@ -23,4 +25,54 @@ package PSP.Procesos.ud4.almacenzapatos;
  * --> dos hilos consumidores, cada hilo consumidor, completará 5 pedidos.
  */
 public class MainAlmacen {
+    private static final String[] tipoZapatos = {"botas", "tacones", "deportivos", "sandalias",
+            "mocasines", "crocs"};
+    public static void main(String[] args) {
+        final Almacen almacen = new Almacen();
+        Random random = new Random();
+
+        Runnable r = () -> {
+
+            for (int i = 0; i < 10; i++) {
+                synchronized (almacen) {
+                    while (almacen.getPedidos().size() >= 10) {
+                        try {
+                            almacen.wait();
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+
+                almacen.recibirPedido(new Pedido(i, tipoZapatos[random.nextInt(0, 5 + 1)],
+                        random.nextInt(20, 25 + 1)));
+
+                    almacen.notifyAll();
+            }
+
+        }
+        };
+
+        new Thread(r).start();
+
+        for (int i = 0; i < 2; i++) {
+            new Thread(() ->{
+
+                for (int j = 0; j < 5; j++) {
+                    synchronized (almacen) {
+                        while (almacen.getPedidos().isEmpty()) {
+                            try {
+                                almacen.wait();
+                            } catch (InterruptedException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }
+
+                    System.out.println(almacen.completarPedido());
+                    almacen.notifyAll();
+                }
+                }
+
+            }).start();
+        }
+    }
 }
