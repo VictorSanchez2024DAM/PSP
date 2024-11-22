@@ -1,6 +1,8 @@
 package PSP.Procesos.ud4.almacenzapatos;
 
 import java.util.Random;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * Consumer/Producer para un centro de almacén de zapatos.
@@ -51,8 +53,9 @@ public class MainAlmacen {
 
         }
         };
-
-        new Thread(r).start();
+        ExecutorService executor = Executors.newCachedThreadPool();
+        executor.execute(r);
+        executor.shutdown();
 
         for (int i = 0; i < 2; i++) {
             new Thread(() ->{
